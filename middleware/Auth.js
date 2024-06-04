@@ -15,7 +15,7 @@ const Auth = {
             return res.json()
         })
     },
-    signup: userObj => {
+    signUp: userObj => {
         return fetch(`${URL_PREFIX}/api/users/register`, {
             method: "POST",
             body: JSON.stringify(userObj),
@@ -49,6 +49,20 @@ const Auth = {
                 return data;
             }).catch((error)=>{
             console.log(error)
+        })
+    },
+    UpdateUser: (userId)=>{
+        return fetch(`${URL_PREFIX}/api/users/${userId}`, {
+            method: "POST",
+            body: JSON.stringify(userObj),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(res=>{
+            if(!res.ok){
+                throw new Error('wrong credentials')
+            }
+            return res.json()
         })
     },
 

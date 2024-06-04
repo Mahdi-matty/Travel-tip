@@ -4,15 +4,36 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 import { Link } from 'expo-router'
-
+import {Login} from '../../middleware/Auth'
+import useGlobalContext from '../../context/GlobalProvider'
 const SignIn = () => {
+  const { setUser, setIsLogged } = useGlobalContext();
   const [Form, setForm] = useState({
     username: '',
     password: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const handleSubmit = ()=>{
+  const handleSubmit = async(form)=>{
+    const userObj = {
+      username: form.username,
+      password: form.password
+    }
+    if (form.username === "" || form.password === "") {
+      Alert.alert("Error", "Please fill in all fields");
+    }
 
+    setIsSubmitting(true);
+    try {
+      const res = await Login(userObj)
+      if(res.ok){
+        localStorage.setItem('token', res.token)
+        router.push('/home')
+      }
+    }catch(error){
+      console.log(error)
+    }finally{
+      setIsSubmitting(false)
+    }
   }
   return (
     <SafeAreaView className='bg-primary h-full' >
