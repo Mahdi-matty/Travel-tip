@@ -1,24 +1,26 @@
-import { Stack, SplashScreen } from "expo-router";
-import GlobalProvier from "../context/GlobalProvider";
-import {User, onAuthStateChanged} from 'firebase/auth'
-import { useState, useEffect } from "react";
-import { fireAuth } from "../middleware/FireBaseConfig";
+import { View, ActivityIndicator } from 'react-native';
+import { Stack, SplashScreen } from 'expo-router';
+import {useGlobalContext}from '../context/GlobalProvider'
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
-  const [user, setUser] = useState<User || null>(null)
+  const {user, isLoading} =useGlobalContext()
 
-  useEffect(()=>{
-    onAuthStateChanged(fireAuth, (user)=>{
-      
-    })
-  })
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   return (
-    <GlobalProvier>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
+    <Stack>
+      {user ? (
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      ) : (
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      </Stack>
-    </GlobalProvier>
+      )}
+    </Stack>
   );
+
 }

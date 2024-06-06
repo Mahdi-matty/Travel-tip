@@ -1,40 +1,27 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { getTokenData} from '../middleware/Auth'
+import React, { createContext,useEffect, useContext, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { fireAuth } from "../middleware/FireBaseConfig";
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
 
 const GlobalProvider = ({ children }) => {
-    const [isLogged, setIsLogged] = useState(false);
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const token = localStorage.getItem('token')
+    const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(fireAuth, (user) => {
+      setUser(user);
+      setIsLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
   
-    useEffect(() => {
-      getTokenData(token)
-        .then((res) => {
-          if (res) {
-            setIsLogged(true);
-            setUser(res);
-          } else {
-            setIsLogged(false);
-            setUser(null);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }, [token]);
+   
     return (
         <GlobalContext.Provider
           value={{
-            isLogged,
-            setIsLogged,
             user,
-            setUser,
-            loading,
+            isLoading
           }}
         >
           {children}
