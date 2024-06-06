@@ -1,34 +1,6 @@
 const URL_PREFIX = "http://localhost:3001"
 
 const Auth = {
-    login: (userObj) => {
-        return fetch(`${URL_PREFIX}/api/user/login`, {
-            method: "POST",
-            body: JSON.stringify(userObj),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(res => {
-            if (!res.ok) {
-                throw new Error("invalid login")
-            }
-            return res.json()
-        })
-    },
-    signUp: userObj => {
-        return fetch(`${URL_PREFIX}/api/users/register`, {
-            method: "POST",
-            body: JSON.stringify(userObj),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(res => {
-            if (!res.ok) {
-                throw new Error("invalid signup")
-            }
-            return res.json()
-        })
-    },
     getTokenData: (token) => {
         return fetch(`${URL_PREFIX}/api/tokenData`, {
             method: "GET",
@@ -49,20 +21,6 @@ const Auth = {
                 return data;
             }).catch((error)=>{
             console.log(error)
-        })
-    },
-    UpdateUser: (userId)=>{
-        return fetch(`${URL_PREFIX}/api/users/${userId}`, {
-            method: "POST",
-            body: JSON.stringify(userObj),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(res=>{
-            if(!res.ok){
-                throw new Error('wrong credentials')
-            }
-            return res.json()
         })
     },
 

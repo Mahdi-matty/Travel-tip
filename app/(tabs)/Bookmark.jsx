@@ -1,17 +1,14 @@
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { userMark } from "../../middleware/Api";
-import { useGlobalContext } from "../../context/GlobalProvider";
 import { useEffect } from "react";
-
+import {getDocs, collection} from 'firebase/firestore'
 const Bookmark = () => {
-  const { user, isLogged } = useGlobalContext();
   const [bookMarks, setBookMarks] = useState([]);
   const userId = user.id;
   useEffect(() => {
     const fetchMark = async () => {
       try {
-        const res = await userMark(userId);
+        const res = await getDocs(collection(db, 'flightBookMark'));
         if (res.ok) {
           setBookMarks(res);
         }
@@ -22,7 +19,7 @@ const Bookmark = () => {
     if (isLogged) {
       fetchMark();
     }
-  }, [isLogged, user]);
+  }, [user]);
   return (
     <SafeAreaView>
       <View>

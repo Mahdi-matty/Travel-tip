@@ -7,14 +7,10 @@ import { Link } from 'expo-router'
 import { fireAuth } from '../middleware/FireBaseConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {signInWithEmailAndPassword} from 'firebase/auth'
-import useGlobalContext from '../../context/GlobalProvider'
-import { useNavigation } from '@react-navigation/native';
 import OauthLogin from '../../components/OauthLogin'
 const SignIn = () => {
-  const { setUser, setIsLogged } = useGlobalContext();
   const [showNormalLogin, setShowNormalLogin] = useState(true)
   const [showOauthLogin, setShowOauthLogin] = useState(false)
-  const navigation = useNavigation();
   const [Form, setForm] = useState({
     email: '',
     password: ''
@@ -33,7 +29,7 @@ const SignIn = () => {
         await AsyncStorage.setItem('token', token);
         setIsLogged(true)
         setUser(res.user);
-        navigation.navigate('Home');
+        router.push('Home');
       }
     }catch(error){
       console.log(error)

@@ -1,29 +1,61 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import React, { useState, useEffect } from "react";
 import CustomButton from "../CustomButton";
 import NewRide from "../NewRide";
-import Api from '../../middleware/Api'
-
-const RideShare = ({formData}) => {
+import { db } from "../../middleware/FireBaseConfig";
+import { addDoc, collection } from "firebase/firestore";
+import {useGlobalContext} from '../../context/GlobalProvider'
+const RideShare = ({ formData }) => {
   const [showNewRide, setShowNewRide] = useState(false);
-  const [rideData, setRideData] = useState([])
-  const { origin, destenation, departureDate, passengerNumber  } = formData
-  useEffect(()=>{
-    const fetchRide = async ()=>{
+  const [rideData, setRideData] = useState([]);
+  const { origin, destenation, departureDate, passengerNumber } = formData;
+  const {user} = useGlobalContext()
+  const userId = user.id
+  useEffect(() => {
+    const fetchRide = async () => {
       try {
-        const res = await Api.rideShare({ origin, destenation, departureDate, passengerNumber  })
-        if(res.ok){
-          setRideData(res)
+        const res = await Api.rideShare({
+          origin,
+          destenation,
+          departureDate,
+          passengerNumber,
+        });
+        if (res.ok) {
+          setRideData(res);
         }
-      }catch(error){
-        console.log(error)
+      } catch (error) {
+        console.log(error);
       }
+    };
+    fetchRide();
+  }, []);
+  const handleNewRide = () => {
+    setShowNewRide(!showNewRide);
+  };
+  const handleBook = async (ride) => {
+    try {
+      if(!user){
+        console.log('no user found')
+        return 
+      }
+      const markOj = {
+        origin: ride.origin,
+        destenation: ride.destenation,
+        departureDate: ride.departureDate,
+        userId: userId
+      }
+      await addDoc(collection(db, "rideBookMark"), { markOj });
+      console.log("added successfully");
+    } catch (error) {
+      console.log(error);
     }
-    fetchRide()
-  }, [])
-  const handleNewRide = ()=>{
-    setShowNewRide(!showNewRide)
-  }
+  };
+  const renderItem = ({ item }) => (
+    <View key={item.id}>
+      <Text>{item.price}</Text>
+      <CustomButton title="Mark" handlePress={() => handleBook(item)} />
+    </View>
+  );
   return (
     <View>
       <View>
@@ -35,14 +67,11 @@ const RideShare = ({formData}) => {
         )}
       </View>
       <View>
-        {rideData && (
-          rideData.map((ride)=>(
-            <View key={ride.id}>
-              <Text>{ride.price}</Text>
-            </View>
-          ))
-        )}
-
+        <FlatList
+          data={busData}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+        />
       </View>
     </View>
   );
