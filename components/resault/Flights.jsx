@@ -46,6 +46,7 @@ const Flights = ({ formData }) => {
         origin: plane.origin,
         destenation: plane.destenation,
         departureDate: plane.departureDate,
+        pirce: plane.price,
         userId: userId
       }
       await addDoc(collection(db, "flightBookMark"), { markOj });

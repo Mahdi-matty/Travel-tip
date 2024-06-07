@@ -42,6 +42,7 @@ const RideShare = ({ formData }) => {
         origin: ride.origin,
         destenation: ride.destenation,
         departureDate: ride.departureDate,
+        price:ride.price,
         userId: userId
       }
       await addDoc(collection(db, "rideBookMark"), { markOj });

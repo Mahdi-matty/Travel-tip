@@ -38,6 +38,7 @@ const Train = ({ formData }) => {
         origin: bus.origin,
         destenation: bus.destenation,
         departureDate: bus.departureDate,
+        price:bus.price,
         userId: userId
       }
       await addDoc(collection(db, "busBookMark"), { markOj });
