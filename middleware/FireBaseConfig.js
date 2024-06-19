@@ -6,16 +6,24 @@ import {getAuth} from "firebase/auth";
 import {getFirestore} from "firebase/firestore";
 // import {...} from "firebase/functions";
 // import {...} from "firebase/storage";
-
+import {
+  API_KEY,
+  AUTHDOMAIN,
+  PROJECTID,
+  STORAGEBUCKET,
+  MESSEGINGSENDERID,
+  APPID,
+  MEASURMENTID
+} from '@env';
 // Initialize Firebase
 const firebaseConfig = {
-  apiKey: process.env.API_KEY,
-  authDomain: process.env.AUTHDOMAIN,
-  projectId: process.env.PROJECTID,
-  storageBucket: process.env.STORAGEBUCKET,
-  messagingSenderId: process.env.MESSEGINGSENDERID,
-  appId: process.env.APPID,
-  measurementId: process.env.MEASURMENTID,
+  apiKey: API_KEY,
+  authDomain: AUTHDOMAIN,
+  projectId: PROJECTID,
+  storageBucket: STORAGEBUCKET,
+  messagingSenderId: MESSEGINGSENDERID,
+  appId: APPID,
+  measurementId: MEASURMENTID,
 };
 
 const app = initializeApp(firebaseConfig);

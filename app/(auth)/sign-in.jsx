@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 import { Link } from 'expo-router'
-import { fireAuth } from '../middleware/FireBaseConfig'
+import { fireAuth } from '../../middleware/FireBaseConfig'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {signInWithEmailAndPassword} from 'firebase/auth'
 import OauthLogin from '../../components/OauthLogin'
