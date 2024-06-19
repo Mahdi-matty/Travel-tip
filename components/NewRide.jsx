@@ -5,7 +5,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import FormField from "./FormField";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { addDoc, collection } from "firebase/firestore";
-import {useGlobalContext} from '../../context/GlobalProvider'
+import {useGlobalContext} from '../context/GlobalProvider'
 import CustomButton from "./CustomButton";
 const NewRide = () => {
   const [departureDate, setDate] = useState(new Date());
